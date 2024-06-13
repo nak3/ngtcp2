@@ -11,6 +11,7 @@ env:
   AWSLC_VERSION: v1.29.0
   PICOTLS_VERSION: 096fc5c2ab4db1c4e0adcfdd4e75b8ee2dcc7c99
   WOLFSSL_VERSION: v5.7.0-stable
+  LIBRESSL_VERSION: v3.9.2
   NGHTTP3_VERSION: head
 
 jobs:
@@ -105,6 +106,17 @@ jobs:
       with:
         path: wolfssl/build
         key: ${{ matrix.os }}-wolfssl-${{ env.WOLFSSL_VERSION }}
+    - name: Restore LibreSSL cache
+      id: cache-libressl
+      uses: actions/cache@v4
+      with:
+        path: |
+          libressl/build
+          # TODO: remove
+          #          libressl/build/lib/libcrypto.a
+          #          libressl/build/lib/libssl.a
+          #          libressl/build/include
+        key: ${{ matrix.os }}-libressl-${{ env.LIBRESSL_VERSION }}
     - name: Restore nghttp3 cache
       id: cache-nghttp3
       uses: actions/cache@v4
@@ -120,6 +132,7 @@ jobs:
         steps.cache-picotls-openssl1.outputs.cache-hit != 'true' ||
         steps.cache-picotls-openssl3.outputs.cache-hit != 'true' ||
         steps.cache-wolfssl.outputs.cache-hit != 'true' ||
+        steps.cache-libressl.outputs.cache-hit != 'true' ||
         steps.cache-nghttp3.outputs.cache-hit != 'true'
       run: |
         echo 'needs-build=true' >> $GITHUB_OUTPUT
@@ -184,6 +197,10 @@ jobs:
           export EXTRA_CONFIGURE_FLAGS="--enable-aesni"
         fi
         ./ci/build_wolfssl.sh
+    - name: Build LibreSSL
+      if: steps.cache-libressl.outputs.cache-hit != 'true'
+      run: |
+        ./ci/build_libressl.sh
     - name: Build nghttp3
       if: steps.cache-nghttp3.outputs.cache-hit != 'true'
       run: |
@@ -344,6 +361,12 @@ jobs:
       with:
         path: wolfssl/build
         key: ${{ matrix.os }}-wolfssl-${{ env.WOLFSSL_VERSION }}
+        fail-on-cache-miss: true
+    - name: Restore libreSSL cache
+      uses: actions/cache/restore@v4
+      with:
+        path: libre/build
+        key: ${{ matrix.os }}-libressl-${{ env.LIBRESSL_VERSION }}
         fail-on-cache-miss: true
     - name: Restore nghttp3 cache
       uses: actions/cache/restore@v4
