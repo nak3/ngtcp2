@@ -365,7 +365,7 @@ jobs:
     - name: Restore libreSSL cache
       uses: actions/cache/restore@v4
       with:
-        path: libre/build
+        path: libressl/build
         key: ${{ matrix.os }}-libressl-${{ env.LIBRESSL_VERSION }}
         fail-on-cache-miss: true
     - name: Restore nghttp3 cache
