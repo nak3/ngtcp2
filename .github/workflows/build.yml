@@ -111,11 +111,11 @@ jobs:
       uses: actions/cache@v4
       with:
         path: |
-          libressl/build
+          #libressl/build
           # TODO: remove
-          #          libressl/build/lib/libcrypto.a
-          #          libressl/build/lib/libssl.a
-          #          libressl/build/include
+          libressl/build/lib/libcrypto.a
+          libressl/build/lib/libssl.a
+          libressl/build/include
         key: ${{ matrix.os }}-libressl-${{ env.LIBRESSL_VERSION }}
     - name: Restore nghttp3 cache
       id: cache-nghttp3
@@ -365,7 +365,11 @@ jobs:
     - name: Restore libreSSL cache
       uses: actions/cache/restore@v4
       with:
-        path: libressl/build
+        path: |
+          #libressl/build
+          libressl/build/lib/libcrypto.a
+          libressl/build/lib/libssl.a
+          libressl/build/include
         key: ${{ matrix.os }}-libressl-${{ env.LIBRESSL_VERSION }}
         fail-on-cache-miss: true
     - name: Restore nghttp3 cache
