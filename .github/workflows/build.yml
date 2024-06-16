@@ -224,9 +224,13 @@ jobs:
           buildtool: distcheck
         - tls: tls-alt
           buildtool: distcheck
+        - tls: tls
+          buildtool: distcheck
         - compiler: gcc
           sockaddr: generic-sockaddr
         - tls: tls-alt
+          sockaddr: generic-sockaddr
+        - tls: tls
           sockaddr: generic-sockaddr
         - buildtool: distcheck
           sockaddr: generic-sockaddr
@@ -236,10 +240,14 @@ jobs:
           compiler: gcc
         - os: macos-13
           tls: tls-alt
+        - os: macos-13
+          tls: tls
         - os: macos-14
           compiler: gcc
         - os: macos-14
           tls: tls-alt
+        - os: macos-14
+          tls: tls
 
     runs-on: ${{ matrix.os }}
 
