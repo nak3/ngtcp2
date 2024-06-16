@@ -75,7 +75,7 @@ crypto_cipher_suite_get_aead_max_encryption(ptls_cipher_suite_t *cs) {
     return NGTCP2_CRYPTO_MAX_ENCRYPTION_AES_GCM;
   }
 
-#if !defined(LIBRESSL_VERSION_NUMBER) && defined(PTLS_OPENSSL_HAVE_CHACHA20_POLY1305)
+#ifdef PTLS_OPENSSL_HAVE_CHACHA20_POLY1305
   if (cs->aead == &ptls_openssl_chacha20poly1305) {
     return NGTCP2_CRYPTO_MAX_ENCRYPTION_CHACHA20_POLY1305;
   }
@@ -91,7 +91,7 @@ crypto_cipher_suite_get_aead_max_decryption_failure(ptls_cipher_suite_t *cs) {
     return NGTCP2_CRYPTO_MAX_DECRYPTION_FAILURE_AES_GCM;
   }
 
-#if !defined(LIBRESSL_VERSION_NUMBER) && defined(PTLS_OPENSSL_HAVE_CHACHA20_POLY1305)
+#ifdef PTLS_OPENSSL_HAVE_CHACHA20_POLY1305
   if (cs->aead == &ptls_openssl_chacha20poly1305) {
     return NGTCP2_CRYPTO_MAX_DECRYPTION_FAILURE_CHACHA20_POLY1305;
   }
@@ -110,7 +110,7 @@ crypto_cipher_suite_get_hp(ptls_cipher_suite_t *cs) {
     return &ptls_openssl_aes256ctr;
   }
 
-#if !defined(LIBRESSL_VERSION_NUMBER) && defined(PTLS_OPENSSL_HAVE_CHACHA20_POLY1305)
+#ifdef PTLS_OPENSSL_HAVE_CHACHA20_POLY1305
   if (cs->aead == &ptls_openssl_chacha20poly1305) {
     return &ptls_openssl_chacha20;
   }
@@ -122,7 +122,7 @@ crypto_cipher_suite_get_hp(ptls_cipher_suite_t *cs) {
 static int supported_cipher_suite(ptls_cipher_suite_t *cs) {
   return cs->aead == &ptls_openssl_aes128gcm ||
          cs->aead == &ptls_openssl_aes256gcm
-#if !defined(LIBRESSL_VERSION_NUMBER) && defined(PTLS_OPENSSL_HAVE_CHACHA20_POLY1305)
+#ifdef PTLS_OPENSSL_HAVE_CHACHA20_POLY1305
          || cs->aead == &ptls_openssl_chacha20poly1305
 #endif /* PTLS_OPENSSL_HAVE_CHACHA20_POLY1305 */
       ;
