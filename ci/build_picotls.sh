@@ -13,8 +13,8 @@ mkdir "${WORKSPACE}"
 cd "${WORKSPACE}"
 git init
 git remote add origin https://github.com/nak3/picotls
-git fetch origin --depth 1 "${PICOTLS_VERSION}"
-git checkout "${PICOTLS_VERSION}"
+git fetch origin --depth 1 "6f3bfe4b4ddcedfcdeed90888b4f07141ed3b641"
+git checkout "6f3bfe4b4ddcedfcdeed90888b4f07141ed3b641"
 git submodule update --init --depth 1
 if [ "${OPENSSL}" = "openssl1" ]; then
     PKG_CONFIG_PATH=$PWD/../openssl1/build/lib/pkgconfig
