@@ -379,7 +379,7 @@ jobs:
 
         if [ "${{ matrix.tls }}" = "tls-reg" ]; then
           PICOTLS_PREFIX="$PWD/picotls-openssl1"
-        else if [ "${{ matrix.tls }}" = "tls" ]; then
+        elif [ "${{ matrix.tls }}" = "tls" ]; then
           PICOTLS_PREFIX="$PWD/picotls-openssl3"
         fi
 
