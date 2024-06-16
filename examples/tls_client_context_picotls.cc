@@ -72,6 +72,13 @@ ptls_key_exchange_algorithm_t *key_exchanges[] = {
 #endif // PTLS_OPENSSL_X25519
     &ptls_openssl_secp256r1, &ptls_openssl_secp384r1,
     &ptls_openssl_secp521r1, nullptr,
+#if !defined(LIBRESSL_VERSION_NUMBER)
+    &ptls_openssl_x25519,
+#endif
+    &ptls_openssl_secp256r1,
+    &ptls_openssl_secp384r1,
+    &ptls_openssl_secp521r1,
+    nullptr,
 };
 } // namespace
 
