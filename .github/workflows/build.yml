@@ -352,7 +352,7 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore Picotls + OpenSSL v3.x cache
       uses: actions/cache/restore@v4
-      if: matrix.tls == 'tls'
+      if: matrix.tls != 'tls-reg'
       with:
         path: |
           picotls-openssl3/build/libpicotls-core.a
