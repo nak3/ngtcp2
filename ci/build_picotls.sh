@@ -12,7 +12,7 @@ fi
 mkdir "${WORKSPACE}"
 cd "${WORKSPACE}"
 git init
-git remote add origin https://github.com/nak3/picotls
+git remote add origin https://github.com/h2o/picotls
 git fetch origin --depth 1 "${PICOTLS_VERSION}"
 git checkout "${PICOTLS_VERSION}"
 git submodule update --init --depth 1
