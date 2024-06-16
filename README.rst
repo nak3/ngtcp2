@@ -60,7 +60,6 @@ directory require at least one of the following TLS backends:
 
 - `quictls
   <https://github.com/quictls/openssl/tree/OpenSSL_1_1_1w+quic>`_
-- LibreSSL >= TODO
 - GnuTLS >= 3.7.5
 - BoringSSL (commit a220a6024f66c123019b5c080f6bd8bcaf75448c);
   or aws-lc >= 1.19.0
@@ -186,11 +185,8 @@ Build with libressl
    $ cd ngtcp2
    $ autoreconf -i
    $ # For Mac users who have installed libev with MacPorts, append
-   $ LIBEV_CFLAGS="-I/opt/homebrew/Cellar/libev/4.33/include" LIBEV_LIBS="-L/opt/homebrew/Cellar/libev/4.33/lib -lev"
-   $ ./configure PKG_CONFIG_PATH=$PWD/../nghttp3/build/lib/pkgconfig \
-       OPENSSL_CFLAGS="-I$PWD/../libressl/build/include" \
-       OPENSSL_LIBS="-L$PWD/../libressl/build/lib -lssl -lcrypto" \
-       --with-libressl
+   $ # LIBEV_CFLAGS="-I/opt/homebrew/Cellar/libev/4.33/include" LIBEV_LIBS="-L/opt/homebrew/Cellar/libev/4.33/lib -lev"
+   $ ./configure PKG_CONFIG_PATH=$PWD/../nghttp3/build/lib/pkgconfig:$PWD/../libressl/build/lib/pkgconfig
    $ make -j$(nproc) check
 
 Client/Server

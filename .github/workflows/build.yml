@@ -516,7 +516,7 @@ jobs:
 
         if [ "${{ matrix.tls }}" != "tls-alt" ]; then
           CLIENTS="$CLIENTS ptlsclient"
-          SERVERS="SERVER ptlsserver"
+          SERVERS="$SERVERS ptlsserver"
         fi
 
         for client in $CLIENTS; do
