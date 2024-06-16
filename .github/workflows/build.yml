@@ -314,7 +314,7 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore BoringSSL cache
       uses: actions/cache/restore@v4
-      if: matrix.tls == 'tls-reg'
+      if: matrix.tls != 'tls-alt'
       with:
         path: |
           boringssl/build/crypto/libcrypto.a
@@ -395,7 +395,7 @@ jobs:
         echo 'PICOTLS_PREFIX='"$PICOTLS_PREFIX" >> $GITHUB_ENV
         echo 'AUTOTOOLS_OPTS='"$AUTOTOOLS_OPTS" >> $GITHUB_ENV
     - name: Setup BoringSSL environment variables
-      if: matrix.tls == 'tls-reg'
+      if: matrix.tls != 'tls-alt'
       run: |
         BORINGSSL_INCLUDE_DIR="$PWD/boringssl/include/"
         BORINGSSL_CFLAGS="-I$BORINGSSL_INCLUDE_DIR"
