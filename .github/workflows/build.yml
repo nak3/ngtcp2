@@ -100,6 +100,15 @@ jobs:
           picotls-openssl3/build/libpicotls-openssl.a
           picotls-openssl3/include
         key: ${{ matrix.os }}-picotls-${{ env.PICOTLS_VERSION }}-openssl-${{ env.OPENSSL3_VERSION }}
+    - name: Restore Picotls + LibreSSL cache
+      id: cache-picotls-libressl
+      uses: actions/cache@v4
+      with:
+        path: |
+          picotls-libressl/build/libpicotls-core.a
+          picotls-libressl/build/libpicotls-openssl.a
+          picotls-libressl/include
+        key: ${{ matrix.os }}-picotls-${{ env.PICOTLS_VERSION }}-libressl-${{ env.LIBRESSL_VERSION }}
     - name: Restore wolfSSL cache
       id: cache-wolfssl
       uses: actions/cache@v4
@@ -127,6 +136,7 @@ jobs:
         steps.cache-awslc.outputs.cache-hit != 'true' ||
         steps.cache-picotls-openssl1.outputs.cache-hit != 'true' ||
         steps.cache-picotls-openssl3.outputs.cache-hit != 'true' ||
+        steps.cache-picotls-libressl.outputs.cache-hit != 'true' ||
         steps.cache-wolfssl.outputs.cache-hit != 'true' ||
         steps.cache-libressl.outputs.cache-hit != 'true' ||
         steps.cache-nghttp3.outputs.cache-hit != 'true'
@@ -197,6 +207,12 @@ jobs:
       if: steps.cache-libressl.outputs.cache-hit != 'true'
       run: |
         ./ci/build_libressl.sh
+    - name: Build Picotls + LibreSSL
+      if: steps.cache-picotls-libressl.outputs.cache-hit != 'true'
+      run: |
+        ./ci/build_picotls.sh
+      env:
+        OPENSSL: libressl
     - name: Build nghttp3
       if: steps.cache-nghttp3.outputs.cache-hit != 'true'
       run: |
@@ -352,7 +368,7 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore Picotls + OpenSSL v3.x cache
       uses: actions/cache/restore@v4
-      if: matrix.tls != 'tls-reg'
+      if: matrix.tls == 'tls'
       with:
         path: |
           picotls-openssl3/build/libpicotls-core.a
@@ -374,6 +390,16 @@ jobs:
           libressl/build
         key: ${{ matrix.os }}-libressl-${{ env.LIBRESSL_VERSION }}
         fail-on-cache-miss: true
+    - name: Restore Picotls + LibreSSL
+      uses: actions/cache/restore@v4
+      if: matrix.tls == 'tls-alt'
+      with:
+        path: |
+          picotls-libressl/build/libpicotls-core.a
+          picotls-libressl/build/libpicotls-openssl.a
+          picotls-libressl/include
+        key: ${{ matrix.os }}-picotls-${{ env.PICOTLS_VERSION }}-libressl-${{ env.LIBRESSL_VERSION }}
+        fail-on-cache-miss: true
     - name: Restore nghttp3 cache
       uses: actions/cache/restore@v4
       with:
@@ -385,19 +411,16 @@ jobs:
         PKG_CONFIG_PATH="$PWD/openssl1/build/lib/pkgconfig:$PWD/openssl3/build/lib64/pkgconfig:$PWD/wolfssl/build/lib/pkgconfig:$PWD/nghttp3/build/lib/pkgconfig:$PWD/libressl/build/lib/pkgconfig"
         LDFLAGS="$EXTRA_LDFLAGS -Wl,-rpath,$PWD/openssl1/build/lib -Wl,-rpath,$PWD/openssl3/build/lib64 -Wl,-rpath,$PWD/libressl/build/lib"
 
-        AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-libbrotlienc --with-libbrotlidec"
-
         if [ "${{ matrix.tls }}" = "tls-reg" ]; then
           PICOTLS_PREFIX="$PWD/picotls-openssl1"
-          AUTOTOOLS_OPTS="$AUTOTOOLS_OPTS --with-picotls"
         elif [ "${{ matrix.tls }}" = "tls" ]; then
           PICOTLS_PREFIX="$PWD/picotls-openssl3"
-          AUTOTOOLS_OPTS="$AUTOTOOLS_OPTS --with-picotls"
+        else
+          PICOTLS_PREFIX="$PWD/picotls-libressl"
         fi
-
         PICOTLS_CFLAGS="-I$PICOTLS_PREFIX/include/"
         PICOTLS_LIBS="-L$PICOTLS_PREFIX/build -lpicotls-openssl -lpicotls-core"
-
+        AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-picotls --with-libbrotlienc --with-libbrotlidec"
 
         echo 'PKG_CONFIG_PATH='"$PKG_CONFIG_PATH" >> $GITHUB_ENV
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
@@ -511,13 +534,8 @@ jobs:
         [ -n "$NGTCP2_BUILD_DIR" ] && cd "$NGTCP2_BUILD_DIR"
         "$NGTCP2_SOURCE_DIR"/ci/gen-certificate.sh
 
-        CLIENTS="qtlsclient gtlsclient bsslclient wsslclient"
-        SERVERS="qtlsserver gtlsserver bsslserver wsslserver"
-
-        if [ "${{ matrix.tls }}" != "tls-alt" ]; then
-          CLIENTS="$CLIENTS ptlsclient"
-          SERVERS="$SERVERS ptlsserver"
-        fi
+        CLIENTS="qtlsclient gtlsclient bsslclient wsslclient ptlsclient"
+        SERVERS="qtlsserver gtlsserver bsslserver wsslserver ptlsserver"
 
         for client in $CLIENTS; do
           for server in $SERVERS; do
