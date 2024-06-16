@@ -60,7 +60,7 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR CMAKE_C_COMPILER_ID MA
     -Wnested-externs                     # clang  1.0  gcc  2.7
     -Wpointer-arith                      # clang  1.0  gcc  1.4
     -Wshadow                             # clang  1.0  gcc  2.95
-    -Wundef                              # clang  1.0  gcc  2.95
+    #    -Wundef                              # clang  1.0  gcc  2.95
     -Wwrite-strings                      # clang  1.0  gcc  1.4
   )
 
