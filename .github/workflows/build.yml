@@ -514,6 +514,11 @@ jobs:
         CLIENTS="qtlsclient gtlsclient bsslclient wsslclient ptlsclient"
         SERVERS="qtlsserver gtlsserver bsslserver wsslserver ptlsserver"
 
+        if [ "${{ matrix.tls }}" != "tls-alt" ]; then
+          CLIENTS="$CLIENTS ptlsclient"
+          SERVERS="SERVER ptlsserver"
+        fi
+
         for client in $CLIENTS; do
           for server in $SERVERS; do
             echo "# $client - $server"
