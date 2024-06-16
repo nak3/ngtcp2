@@ -511,8 +511,8 @@ jobs:
         [ -n "$NGTCP2_BUILD_DIR" ] && cd "$NGTCP2_BUILD_DIR"
         "$NGTCP2_SOURCE_DIR"/ci/gen-certificate.sh
 
-        CLIENTS="qtlsclient gtlsclient bsslclient wsslclient ptlsclient"
-        SERVERS="qtlsserver gtlsserver bsslserver wsslserver ptlsserver"
+        CLIENTS="qtlsclient gtlsclient bsslclient wsslclient"
+        SERVERS="qtlsserver gtlsserver bsslserver wsslserver"
 
         if [ "${{ matrix.tls }}" != "tls-alt" ]; then
           CLIENTS="$CLIENTS ptlsclient"
