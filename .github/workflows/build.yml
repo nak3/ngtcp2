@@ -385,17 +385,19 @@ jobs:
         PKG_CONFIG_PATH="$PWD/openssl1/build/lib/pkgconfig:$PWD/openssl3/build/lib64/pkgconfig:$PWD/wolfssl/build/lib/pkgconfig:$PWD/nghttp3/build/lib/pkgconfig:$PWD/libressl/build/lib/pkgconfig"
         LDFLAGS="$EXTRA_LDFLAGS -Wl,-rpath,$PWD/openssl1/build/lib -Wl,-rpath,$PWD/openssl3/build/lib64 -Wl,-rpath,$PWD/libressl/build/lib"
 
+        AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-libbrotlienc --with-libbrotlidec"
+
         if [ "${{ matrix.tls }}" = "tls-reg" ]; then
           PICOTLS_PREFIX="$PWD/picotls-openssl1"
-          #elif [ "${{ matrix.tls }}" = "tls" ]; then
-        else
+          AUTOTOOLS_OPTS="$AUTOTOOLS_OPTS --with-picotls"
+        elif [ "${{ matrix.tls }}" = "tls" ]; then
           PICOTLS_PREFIX="$PWD/picotls-openssl3"
+          AUTOTOOLS_OPTS="$AUTOTOOLS_OPTS --with-picotls"
         fi
 
         PICOTLS_CFLAGS="-I$PICOTLS_PREFIX/include/"
         PICOTLS_LIBS="-L$PICOTLS_PREFIX/build -lpicotls-openssl -lpicotls-core"
 
-        AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-picotls --with-libbrotlienc --with-libbrotlidec"
 
         echo 'PKG_CONFIG_PATH='"$PKG_CONFIG_PATH" >> $GITHUB_ENV
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
