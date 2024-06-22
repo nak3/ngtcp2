@@ -29,7 +29,7 @@ class TestCiphers:
     @pytest.mark.parametrize('cipher', [
         'TLS_AES_128_GCM_SHA256',
         'TLS_AES_256_GCM_SHA384',
-        'AEAD-CHACHA20-POLY1305-SHA256',
+        'TLS_CHACHA20_POLY1305_SHA256',
         'TLS_AES_128_CCM_SHA256',
     ])
     def test_05_01_get(self, env: Env, server, client, cipher):
