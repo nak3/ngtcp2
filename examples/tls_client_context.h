@@ -49,4 +49,8 @@
 #  include "tls_client_context_wolfssl.h"
 #endif // ENABLE_EXAMPLE_WOLFSSL && WITH_EXAMPLE_WOLFSSL
 
+#if defined(ENABLE_EXAMPLE_LIBRESSL) && defined(WITH_EXAMPLE_LIBRESSL)
+#  include "tls_client_context_libressl.h"
+#endif // ENABLE_EXAMPLE_LIBRESSL && WITH_EXAMPLE_LIBRESSL
+
 #endif // TLS_CLIENT_CONTEXT_H

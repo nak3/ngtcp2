@@ -57,6 +57,10 @@ AC_SUBST(CRYPTO_WOLFSSL_LT_CURRENT, 6)
 AC_SUBST(CRYPTO_WOLFSSL_LT_REVISION, 1)
 AC_SUBST(CRYPTO_WOLFSSL_LT_AGE, 1)
 
+AC_SUBST(CRYPTO_LIBRESSL_LT_CURRENT, 4)
+AC_SUBST(CRYPTO_LIBRESSL_LT_REVISION, 1)
+AC_SUBST(CRYPTO_LIBRESSL_LT_AGE, 2)
+
 # from nghttp2
 major=`echo $PACKAGE_VERSION |cut -d. -f1 | sed -e "s/[^0-9]//g"`
 minor=`echo $PACKAGE_VERSION |cut -d. -f2 | sed -e "s/[^0-9]//g"`
@@ -127,6 +131,11 @@ AC_ARG_WITH([gnutls],
                     [Use gnutls [default=no]])],
     [request_gnutls=$withval], [request_gnutls=no])
 
+AC_ARG_WITH([libressl],
+    [AS_HELP_STRING([--with-libressl],
+                    [Use libressl [default=no]])],
+    [request_libressl=$withval], [request_libressl=no])
+
 AC_ARG_WITH([boringssl],
     [AS_HELP_STRING([--with-boringssl],
                     [Use boringssl [default=no]])],
@@ -154,6 +163,9 @@ AC_ARG_WITH([libbrotlidec],
 
 AC_ARG_VAR([BORINGSSL_CFLAGS], [C compiler flags for BORINGSSL])
 AC_ARG_VAR([BORINGSSL_LIBS], [linker flags for BORINGSSL])
+
+AC_ARG_VAR([LIBRESSL_CFLAGS], [C compiler flags for LIBRESSL])
+AC_ARG_VAR([LIBRESSL_LIBS], [linker flags for LIBRESSL])
 
 AC_ARG_VAR([PICOTLS_CFLAGS], [C compiler flags for PICOTLS])
 AC_ARG_VAR([PICOTLS_LIBS], [linker flags for PICOTLS])
@@ -250,6 +262,24 @@ if test "x${request_openssl}" = "xyes" &&
 fi
 
 AM_CONDITIONAL([HAVE_OPENSSL], [ test "x${have_openssl}" = "xyes" ])
+
+# LibreSSL (required for libngtcp2_crypto_libressl,
+# libngtcp2_crypto_picotls and examples)
+have_libressl=no
+if test "x${request_libressl}" != "xno"; then
+  PKG_CHECK_MODULES([LIBRESSL], [openssl >= 1.1.1],
+                    [have_libressl=yes], [have_libressl=no])
+  if test "x${have_libressl}" = "xno"; then
+    AC_MSG_NOTICE($LIBRESSL_PKG_ERRORS)
+  fi
+fi
+
+if test "x${request_libressl}" = "xyes" &&
+   test "x${have_libressl}" != "xyes"; then
+  AC_MSG_ERROR([libressl was requested (--with-libressl) but not found])
+fi
+
+AM_CONDITIONAL([HAVE_LIBRESSL], [ test "x${have_libressl}" = "xyes" ])
 
 # GnuTLS (required for libngtcp2_crypto_gnutls)
 have_gnutls=no
@@ -506,6 +536,10 @@ if test "x${lib_only}" = "xno" &&
     AC_DEFINE([ENABLE_EXAMPLE_WOLFSSL], [1],
               [Define to 1 in order to build examples/{wsslclient,wsslserver}])
   fi
+  if test "x${have_libressl}" = "xyes"; then
+    AC_DEFINE([ENABLE_EXAMPLE_LIBRESSL], [1],
+              [Define to 1 in order to build examples/{lsslclient,lsslserver}])
+  fi
 fi
 
 AM_CONDITIONAL([ENABLE_EXAMPLES], [ test "x${enable_examples}" = "xyes" ])
@@ -514,6 +548,7 @@ AM_CONDITIONAL([ENABLE_EXAMPLE_GNUTLS], [ test "x${enable_examples}" = "xyes" &&
 AM_CONDITIONAL([ENABLE_EXAMPLE_BORINGSSL], [ test "x${enable_examples}" = "xyes" && test "x${have_boringssl}" = "xyes" ])
 AM_CONDITIONAL([ENABLE_EXAMPLE_PICOTLS], [ test "x${enable_examples}" = "xyes" && test "x${have_picotls}" = "xyes" ])
 AM_CONDITIONAL([ENABLE_EXAMPLE_WOLFSSL], [ test "x${enable_examples}" = "xyes" && test "x${have_wolfssl}" = "xyes" ])
+AM_CONDITIONAL([ENABLE_EXAMPLE_LIBRESSL], [ test "x${enable_examples}" = "xyes" && test "x${have_libressl}" = "xyes" ])
 
 AC_SUBST([EXAMPLES_ENABLED], "${enable_examples}")
 AC_SUBST([EXAMPLES_QUICTLS], "${have_openssl}")
@@ -521,6 +556,7 @@ AC_SUBST([EXAMPLES_GNUTLS], "${have_gnutls}")
 AC_SUBST([EXAMPLES_BORINGSSL], "${have_boringssl}")
 AC_SUBST([EXAMPLES_PICOTLS], "${have_picotls}")
 AC_SUBST([EXAMPLES_WOLFSSL], "${have_wolfssl}")
+AC_SUBST([EXAMPLES_LIBRESSL], "${have_libressl}")
 
 # jemalloc
 have_jemalloc=no
@@ -744,6 +780,8 @@ AC_CONFIG_FILES([
   crypto/picotls/libngtcp2_crypto_picotls.pc
   crypto/wolfssl/Makefile
   crypto/wolfssl/libngtcp2_crypto_wolfssl.pc
+  crypto/libressl/Makefile
+  crypto/libressl/libngtcp2_crypto_libressl.pc
   doc/Makefile
   doc/source/conf.py
   third-party/Makefile
@@ -781,6 +819,7 @@ AC_MSG_NOTICE([summary of build options:
     Crypto helper libraries:
       libngtcp2_crypto_quictls:   ${have_openssl}
       libngtcp2_crypto_gnutls:    ${have_gnutls}
+      libngtcp2_crypto_libressl:  ${have_libressl}
       libngtcp2_crypto_boringssl: ${have_boringssl}
       libngtcp2_crypto_picotls:   ${have_picotls}
       libngtcp2_crypto_wolfssl:   ${have_wolfssl}
@@ -792,6 +831,7 @@ AC_MSG_NOTICE([summary of build options:
       Libnghttp3:     ${have_libnghttp3} (CFLAGS='${LIBNGHTTP3_CFLAGS}' LIBS='${LIBNGHTTP3_LIBS}')
       Jemalloc:       ${have_jemalloc} (CFLAGS='${JEMALLOC_CFLAGS}' LIBS='${JEMALLOC_LIBS}')
       GnuTLS:         ${have_gnutls} (CFLAGS='${GNUTLS_CFLAGS}' LIBS='${GNUTLS_LIBS}')
+      LibreSSL:       ${have_libressl} (CFLAGS='${LIBRESSL_CFLAGS}' LIBS='${LIBRESSL_LIBS}')
       BoringSSL:      ${have_boringssl} (CFLAGS='${BORINGSSL_CFLAGS}' LIBS='${BORINGSSL_LIBS}')
       Picotls:        ${have_picotls} (CFLAGS='${PICOTLS_CFLAGS}' LIBS='${PICOTLS_LIBS}')
       wolfSSL:        ${have_wolfssl} (CFLAGS='${WOLFSSL_CFLAGS}' LIBS='${WOLFSSL_LIBS}')

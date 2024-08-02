@@ -134,6 +134,32 @@ gtlsserver_SOURCES = server.cc server.h ${SERVER_SRCS} \
 	util_gnutls.cc
 endif # ENABLE_EXAMPLE_GNUTLS
 
+if ENABLE_EXAMPLE_LIBRESSL
+noinst_PROGRAMS += lsslclient lsslserver
+
+lsslclient_CPPFLAGS = ${AM_CPPFLAGS} \
+        @JEMALLOC_CFLAGS@ @LIBRESSL_CFLAGS@ -DWITH_EXAMPLE_LIBRESSL
+lsslclient_LDADD = ${LDADD} \
+        $(top_builddir)/crypto/libressl/libngtcp2_crypto_libressl.la \
+        @LIBRESSL_LIBS@ \
+        @JEMALLOC_LIBS@
+lsslclient_SOURCES = client.cc client.h ${CLIENT_SRCS} \
+        tls_client_context_libressl.cc tls_client_context_libressl.h \
+        tls_client_session_libressl.cc tls_client_session_libressl.h \
+	tls_session_base_quictls.cc tls_session_base_quictls.h \
+	util_openssl.cc
+
+lsslserver_CPPFLAGS = ${lsslclient_CPPFLAGS}
+lsslserver_LDADD = ${lsslclient_LDADD} \
+        $(top_builddir)/crypto/libressl/libngtcp2_crypto_libressl.la \
+        @LIBRESSL_LIBS@
+lsslserver_SOURCES = server.cc server.h ${SERVER_SRCS} \
+        tls_server_context_libressl.cc tls_server_context_libressl.h \
+        tls_server_session_libressl.cc tls_server_session_libressl.h \
+	tls_session_base_quictls.cc tls_session_base_quictls.h \
+	util_openssl.cc
+endif # ENABLE_EXAMPLE_LIBRESSL
+
 if ENABLE_EXAMPLE_BORINGSSL
 noinst_PROGRAMS += bsslclient bsslserver
 

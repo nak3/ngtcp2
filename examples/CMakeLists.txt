@@ -365,3 +365,70 @@ if(LIBEV_FOUND AND HAVE_WOLFSSL AND LIBNGHTTP3_FOUND)
 
   # TODO prevent wsslclient and example wsslserver from being installed?
 endif()
+
+if(LIBEV_FOUND AND HAVE_LIBRESSL AND LIBNGHTTP3_FOUND)
+  set(lsslclient_SOURCES
+    client.cc
+    client_base.cc
+    debug.cc
+    util.cc
+    shared.cc
+    tls_client_context_libressl.cc
+    tls_client_session_libressl.cc
+    tls_session_base_libressl.cc
+    util_openssl.cc
+  )
+
+  set(lsslserver_SOURCES
+    server.cc
+    server_base.cc
+    debug.cc
+    util.cc
+    http.cc
+    shared.cc
+    tls_server_context_libressl.cc
+    tls_server_session_libressl.cc
+    tls_session_base_libressl.cc
+    util_openssl.cc
+  )
+
+  set(lssl_INCLUDE_DIRS
+    ${CMAKE_SOURCE_DIR}/lib/includes
+    ${CMAKE_BINARY_DIR}/lib/includes
+    ${CMAKE_SOURCE_DIR}/third-party
+    ${CMAKE_SOURCE_DIR}/crypto/includes
+
+    ${JEMALLOC_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIRS}
+    ${LIBEV_INCLUDE_DIRS}
+    ${LIBNGHTTP3_INCLUDE_DIRS}
+  )
+
+  set(lssl_LIBS
+    ngtcp2_crypto_libressl
+    ngtcp2
+    ${JEMALLOC_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
+    ${LIBEV_LIBRARIES}
+    ${LIBNGHTTP3_LIBRARIES}
+  )
+
+  add_executable(lsslclient ${lsslclient_SOURCES} $<TARGET_OBJECTS:http-parser>)
+  add_executable(lsslserver ${lsslserver_SOURCES} $<TARGET_OBJECTS:http-parser>)
+  set_target_properties(lsslclient PROPERTIES
+    COMPILE_FLAGS "${WARNCXXFLAGS} -DENABLE_EXAMPLE_LIBRESSL -DWITH_EXAMPLE_LIBRESSL"
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+  )
+  set_target_properties(lsslserver PROPERTIES
+    COMPILE_FLAGS "${WARNCXXFLAGS} -DENABLE_EXAMPLE_LIBRESSL -DWITH_EXAMPLE_LIBRESSL"
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+  )
+  target_include_directories(lsslclient PUBLIC ${lssl_INCLUDE_DIRS})
+  target_include_directories(lsslserver PUBLIC ${lssl_INCLUDE_DIRS})
+  target_link_libraries(lsslclient ${lssl_LIBS})
+  target_link_libraries(lsslserver ${lssl_LIBS})
+
+  # TODO prevent client and example servers from being installed?
+endif()

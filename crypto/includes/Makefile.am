@@ -43,3 +43,7 @@ endif
 if HAVE_WOLFSSL
 nobase_include_HEADERS += ngtcp2/ngtcp2_crypto_wolfssl.h
 endif
+
+if HAVE_LIBRESSL
+nobase_include_HEADERS += ngtcp2/ngtcp2_crypto_libressl.h
+endif
