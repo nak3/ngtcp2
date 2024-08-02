@@ -135,15 +135,7 @@ gtlsserver_SOURCES = server.cc server.h ${SERVER_SRCS} \
 endif # ENABLE_EXAMPLE_GNUTLS
 
 if ENABLE_EXAMPLE_LIBRESSL
-noinst_PROGRAMS += lsslclient lsslserver lsslsimpleclient
-
-lsslsimpleclient_CPPFLAGS = ${AM_CPPFLAGS} \
-        @JEMALLOC_CFLAGS@ @LIBRESSL_CFLAGS@
-lsslsimpleclient_LDADD = ${LDADD} \
-        $(top_builddir)/crypto/libressl/libngtcp2_crypto_libressl.la \
-        @LIBRESSL_LIBS@ \
-        @JEMALLOC_LIBS@
-lsslsimpleclient_SOURCES = lsslsimpleclient.c
+noinst_PROGRAMS += lsslclient lsslserver
 
 lsslclient_CPPFLAGS = ${AM_CPPFLAGS} \
         @JEMALLOC_CFLAGS@ @LIBRESSL_CFLAGS@ -DWITH_EXAMPLE_LIBRESSL
