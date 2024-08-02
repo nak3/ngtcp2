@@ -398,8 +398,10 @@ jobs:
         fail-on-cache-miss: true
     - name: Setup environment variables
       run: |
-        PKG_CONFIG_PATH="$PWD/openssl1/build/lib/pkgconfig:$PWD/openssl3/build/lib64/pkgconfig:$PWD/wolfssl/build/lib/pkgconfig:$PWD/nghttp3/build/lib/pkgconfig:$PWD/libressl/build/lib/pkgconfig"
-        LDFLAGS="$EXTRA_LDFLAGS -Wl,-rpath,$PWD/openssl1/build/lib -Wl,-rpath,$PWD/openssl3/build/lib64 -Wl,-rpath,$PWD/libressl/build/lib"
+        PKG_CONFIG_PATH="$PWD/wolfssl/build/lib/pkgconfig:$PWD/nghttp3/build/lib/pkgconfig:$PWD/libressl/build/lib/pkgconfig"
+        #PKG_CONFIG_PATH="$PWD/openssl1/build/lib/pkgconfig:$PWD/openssl3/build/lib64/pkgconfig:$PWD/wolfssl/build/lib/pkgconfig:$PWD/nghttp3/build/lib/pkgconfig:$PWD/libressl/build/lib/pkgconfig"
+        LDFLAGS="$EXTRA_LDFLAGS -Wl,-rpath,$PWD/libressl/build/lib"
+        #LDFLAGS="$EXTRA_LDFLAGS -Wl,-rpath,$PWD/openssl1/build/lib -Wl,-rpath,$PWD/openssl3/build/lib64 -Wl,-rpath,$PWD/libressl/build/lib"
 
         if [ "${{ matrix.tls }}" = "tls-reg" ]; then
           # TODO
