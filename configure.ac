@@ -527,6 +527,10 @@ if test "x${lib_only}" = "xno" &&
     AC_DEFINE([ENABLE_EXAMPLE_WOLFSSL], [1],
               [Define to 1 in order to build examples/{wsslclient,wsslserver}])
   fi
+  if test "x${have_libressl}" = "xyes"; then
+    AC_DEFINE([ENABLE_EXAMPLE_LIBRESSL], [1],
+              [Define to 1 in order to build examples/{lsslclient,lsslserver}])
+  fi
 fi
 
 AM_CONDITIONAL([ENABLE_EXAMPLES], [ test "x${enable_examples}" = "xyes" ])
@@ -535,6 +539,7 @@ AM_CONDITIONAL([ENABLE_EXAMPLE_GNUTLS], [ test "x${enable_examples}" = "xyes" &&
 AM_CONDITIONAL([ENABLE_EXAMPLE_BORINGSSL], [ test "x${enable_examples}" = "xyes" && test "x${have_boringssl}" = "xyes" ])
 AM_CONDITIONAL([ENABLE_EXAMPLE_PICOTLS], [ test "x${enable_examples}" = "xyes" && test "x${have_picotls}" = "xyes" ])
 AM_CONDITIONAL([ENABLE_EXAMPLE_WOLFSSL], [ test "x${enable_examples}" = "xyes" && test "x${have_wolfssl}" = "xyes" ])
+AM_CONDITIONAL([ENABLE_EXAMPLE_LIBRESSL], [ test "x${enable_examples}" = "xyes" && test "x${have_libressl}" = "xyes" ])
 
 AC_SUBST([EXAMPLES_ENABLED], "${enable_examples}")
 AC_SUBST([EXAMPLES_QUICTLS], "${have_openssl}")
@@ -542,6 +547,7 @@ AC_SUBST([EXAMPLES_GNUTLS], "${have_gnutls}")
 AC_SUBST([EXAMPLES_BORINGSSL], "${have_boringssl}")
 AC_SUBST([EXAMPLES_PICOTLS], "${have_picotls}")
 AC_SUBST([EXAMPLES_WOLFSSL], "${have_wolfssl}")
+AC_SUBST([EXAMPLES_LIBRESSL], "${have_libressl}")
 
 # jemalloc
 have_jemalloc=no
