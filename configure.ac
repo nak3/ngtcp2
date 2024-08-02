@@ -127,6 +127,11 @@ AC_ARG_WITH([gnutls],
                     [Use gnutls [default=no]])],
     [request_gnutls=$withval], [request_gnutls=no])
 
+AC_ARG_WITH([libressl],
+    [AS_HELP_STRING([--with-libressl],
+                    [Use libressl [default=no]])],
+    [request_libressl=$withval], [request_libressl=no])
+
 AC_ARG_WITH([boringssl],
     [AS_HELP_STRING([--with-boringssl],
                     [Use boringssl [default=no]])],
@@ -250,6 +255,22 @@ if test "x${request_openssl}" = "xyes" &&
 fi
 
 AM_CONDITIONAL([HAVE_OPENSSL], [ test "x${have_openssl}" = "xyes" ])
+
+# LibreSSL (required for libngtcp2_crypto_libressl,
+# libngtcp2_crypto_picotls and examples)
+have_libressl=no
+if test "x${request_libressl}" != "xno"; then
+  PKG_CHECK_MODULES([LIBRESSL], [openssl >= 1.1.1],
+                    [have_libressl=yes], [have_libressl=no])
+  if test "x${have_libressl}" = "xno"; then
+    AC_MSG_NOTICE($LIBRESSL_PKG_ERRORS)
+  fi
+fi
+
+if test "x${request_libressl}" = "xyes" &&
+   test "x${have_libressl}" != "xyes"; then
+  AC_MSG_ERROR([libressl was requested (--with-libressl) but not found])
+fi
 
 # GnuTLS (required for libngtcp2_crypto_gnutls)
 have_gnutls=no
@@ -781,6 +802,7 @@ AC_MSG_NOTICE([summary of build options:
     Crypto helper libraries:
       libngtcp2_crypto_quictls:   ${have_openssl}
       libngtcp2_crypto_gnutls:    ${have_gnutls}
+      libngtcp2_crypto_libressl:  ${have_libressl}
       libngtcp2_crypto_boringssl: ${have_boringssl}
       libngtcp2_crypto_picotls:   ${have_picotls}
       libngtcp2_crypto_wolfssl:   ${have_wolfssl}
@@ -792,6 +814,7 @@ AC_MSG_NOTICE([summary of build options:
       Libnghttp3:     ${have_libnghttp3} (CFLAGS='${LIBNGHTTP3_CFLAGS}' LIBS='${LIBNGHTTP3_LIBS}')
       Jemalloc:       ${have_jemalloc} (CFLAGS='${JEMALLOC_CFLAGS}' LIBS='${JEMALLOC_LIBS}')
       GnuTLS:         ${have_gnutls} (CFLAGS='${GNUTLS_CFLAGS}' LIBS='${GNUTLS_LIBS}')
+      LibreSSL:       ${have_libressl} (CFLAGS='${LIBRESSL_CFLAGS}' LIBS='${LIBRESSL_LIBS}')
       BoringSSL:      ${have_boringssl} (CFLAGS='${BORINGSSL_CFLAGS}' LIBS='${BORINGSSL_LIBS}')
       Picotls:        ${have_picotls} (CFLAGS='${PICOTLS_CFLAGS}' LIBS='${PICOTLS_LIBS}')
       wolfSSL:        ${have_wolfssl} (CFLAGS='${WOLFSSL_CFLAGS}' LIBS='${WOLFSSL_LIBS}')

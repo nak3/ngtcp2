@@ -163,7 +163,7 @@ Build with aws-lc
        --with-boringssl
    $ make -j$(nproc) check
 
-Build with libressl
+Build with Libressl
 -----------------
 
 .. code-block:: shell
@@ -186,7 +186,7 @@ Build with libressl
    $ autoreconf -i
    $ # For Mac users who have installed libev with MacPorts, append
    $ # LIBEV_CFLAGS="-I/opt/homebrew/Cellar/libev/4.33/include" LIBEV_LIBS="-L/opt/homebrew/Cellar/libev/4.33/lib -lev"
-   $ ./configure PKG_CONFIG_PATH=$PWD/../nghttp3/build/lib/pkgconfig:$PWD/../libressl/build/lib/pkgconfig
+   $ ./configure PKG_CONFIG_PATH=$PWD/../nghttp3/build/lib/pkgconfig:$PWD/../libressl/build/lib/pkgconfig --with-libressl
    $ make -j$(nproc) check
 
 Client/Server

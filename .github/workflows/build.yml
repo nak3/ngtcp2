@@ -229,7 +229,7 @@ jobs:
         os: [ubuntu-22.04, macos-13, macos-14]
         compiler: [gcc, clang]
         buildtool: [autotools, distcheck, cmake]
-        tls: [tls, tls-reg, tls-alt]
+        tls: [tls-reg, tls-alt]
         sockaddr: [native-sockaddr, generic-sockaddr]
         exclude:
         - os: macos-13
@@ -240,13 +240,9 @@ jobs:
           buildtool: distcheck
         - tls: tls-alt
           buildtool: distcheck
-        - tls: tls
-          buildtool: distcheck
         - compiler: gcc
           sockaddr: generic-sockaddr
         - tls: tls-alt
-          sockaddr: generic-sockaddr
-        - tls: tls
           sockaddr: generic-sockaddr
         - buildtool: distcheck
           sockaddr: generic-sockaddr
@@ -256,14 +252,10 @@ jobs:
           compiler: gcc
         - os: macos-13
           tls: tls-alt
-        - os: macos-13
-          tls: tls
         - os: macos-14
           compiler: gcc
         - os: macos-14
           tls: tls-alt
-        - os: macos-14
-          tls: tls
 
     runs-on: ${{ matrix.os }}
 
@@ -331,14 +323,14 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore OpenSSL v3.x cache
       uses: actions/cache/restore@v4
-      if: matrix.tls == 'tls'
+      if: matrix.tls == 'tls-alt'
       with:
         path: openssl3/build
         key: ${{ matrix.os }}-openssl-${{ env.OPENSSL3_VERSION }}
         fail-on-cache-miss: true
     - name: Restore BoringSSL cache
       uses: actions/cache/restore@v4
-      if: matrix.tls != 'tls-alt'
+      if: matrix.tls == 'tls-reg'
       with:
         path: |
           boringssl/build/crypto/libcrypto.a
@@ -368,7 +360,7 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore Picotls + OpenSSL v3.x cache
       uses: actions/cache/restore@v4
-      if: matrix.tls == 'tls'
+      if: matrix.tls == 'tls-alt'
       with:
         path: |
           picotls-openssl3/build/libpicotls-core.a
@@ -384,7 +376,6 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore libreSSL cache
       uses: actions/cache/restore@v4
-      if: matrix.tls == 'tls-alt'
       with:
         path: |
           libressl/build
@@ -392,7 +383,6 @@ jobs:
         fail-on-cache-miss: true
     - name: Restore Picotls + LibreSSL
       uses: actions/cache/restore@v4
-      if: matrix.tls == 'tls-alt'
       with:
         path: |
           picotls-libressl/build/libpicotls-core.a
@@ -412,11 +402,11 @@ jobs:
         LDFLAGS="$EXTRA_LDFLAGS -Wl,-rpath,$PWD/openssl1/build/lib -Wl,-rpath,$PWD/openssl3/build/lib64 -Wl,-rpath,$PWD/libressl/build/lib"
 
         if [ "${{ matrix.tls }}" = "tls-reg" ]; then
-          PICOTLS_PREFIX="$PWD/picotls-openssl1"
-        elif [ "${{ matrix.tls }}" = "tls" ]; then
-          PICOTLS_PREFIX="$PWD/picotls-openssl3"
-        else
+          # TODO
+          # PICOTLS_PREFIX="$PWD/picotls-openssl1"
           PICOTLS_PREFIX="$PWD/picotls-libressl"
+        else
+          PICOTLS_PREFIX="$PWD/picotls-openssl3"
         fi
         PICOTLS_CFLAGS="-I$PICOTLS_PREFIX/include/"
         PICOTLS_LIBS="-L$PICOTLS_PREFIX/build -lpicotls-openssl -lpicotls-core"
@@ -429,7 +419,7 @@ jobs:
         echo 'PICOTLS_PREFIX='"$PICOTLS_PREFIX" >> $GITHUB_ENV
         echo 'AUTOTOOLS_OPTS='"$AUTOTOOLS_OPTS" >> $GITHUB_ENV
     - name: Setup BoringSSL environment variables
-      if: matrix.tls != 'tls-alt'
+      if: matrix.tls == 'tls-reg'
       run: |
         BORINGSSL_INCLUDE_DIR="$PWD/boringssl/include/"
         BORINGSSL_CFLAGS="-I$BORINGSSL_INCLUDE_DIR"
