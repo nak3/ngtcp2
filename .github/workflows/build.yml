@@ -403,13 +403,15 @@ jobs:
 
         if [ "${{ matrix.tls }}" = "tls-reg" ]; then
           # TODO
-          # PICOTLS_PREFIX="$PWD/picotls-openssl1"
-          PICOTLS_PREFIX="$PWD/picotls-libressl"
+          PICOTLS_PREFIX="$PWD/picotls-openssl1"
+          # PICOTLS_PREFIX="$PWD/picotls-libressl"
         else
           PICOTLS_PREFIX="$PWD/picotls-openssl3"
         fi
+
         PICOTLS_CFLAGS="-I$PICOTLS_PREFIX/include/"
         PICOTLS_LIBS="-L$PICOTLS_PREFIX/build -lpicotls-openssl -lpicotls-core"
+
         AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-picotls --with-libbrotlienc --with-libbrotlidec"
 
         echo 'PKG_CONFIG_PATH='"$PKG_CONFIG_PATH" >> $GITHUB_ENV
