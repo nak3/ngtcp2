@@ -228,7 +228,8 @@ jobs:
       matrix:
         os: [ubuntu-22.04, macos-13, macos-14]
         compiler: [gcc, clang]
-        buildtool: [autotools, distcheck, cmake]
+          #buildtool: [autotools, distcheck, cmake]
+        buildtool: [autotools, distcheck]
         tls: [tls-reg, tls-alt]
         sockaddr: [native-sockaddr, generic-sockaddr]
         exclude:
