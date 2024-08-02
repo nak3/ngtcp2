@@ -22,14 +22,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef TLS_SERVER_SESSION_QUICTLS_H
-#define TLS_SERVER_SESSION_QUICTLS_H
+#ifndef TLS_SERVER_SESSION_LIBRESSL_H
+#define TLS_SERVER_SESSION_LIBRESSL_H
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include "tls_session_base_quictls.h"
+#include "tls_session_base_libressl.h"
 
 class TLSServerContext;
 class HandlerBase;
@@ -44,4 +44,4 @@ public:
   int send_session_ticket() { return 0; }
 };
 
-#endif // TLS_SERVER_SESSION_QUICTLS_H
+#endif // TLS_SERVER_SESSION_LIBRESSL_H

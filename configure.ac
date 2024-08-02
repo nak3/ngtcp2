@@ -57,6 +57,10 @@ AC_SUBST(CRYPTO_WOLFSSL_LT_CURRENT, 6)
 AC_SUBST(CRYPTO_WOLFSSL_LT_REVISION, 1)
 AC_SUBST(CRYPTO_WOLFSSL_LT_AGE, 1)
 
+AC_SUBST(CRYPTO_LIBRESSL_LT_CURRENT, 4)
+AC_SUBST(CRYPTO_LIBRESSL_LT_REVISION, 1)
+AC_SUBST(CRYPTO_LIBRESSL_LT_AGE, 2)
+
 # from nghttp2
 major=`echo $PACKAGE_VERSION |cut -d. -f1 | sed -e "s/[^0-9]//g"`
 minor=`echo $PACKAGE_VERSION |cut -d. -f2 | sed -e "s/[^0-9]//g"`
@@ -773,6 +777,8 @@ AC_CONFIG_FILES([
   crypto/picotls/libngtcp2_crypto_picotls.pc
   crypto/wolfssl/Makefile
   crypto/wolfssl/libngtcp2_crypto_wolfssl.pc
+  crypto/libressl/Makefile
+  crypto/libressl/libngtcp2_crypto_libressl.pc
   doc/Makefile
   doc/source/conf.py
   third-party/Makefile

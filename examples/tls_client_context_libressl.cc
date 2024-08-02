@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "tls_client_context_quictls.h"
+#include "tls_client_context_libressl.h"
 
 #include <cstring>
 #include <cassert>
@@ -30,7 +30,7 @@
 #include <fstream>
 #include <limits>
 
-#include <ngtcp2/ngtcp2_crypto_quictls.h>
+#include <ngtcp2/ngtcp2_crypto_libressl.h>
 
 #include <openssl/err.h>
 
@@ -39,7 +39,7 @@
 
 namespace {
 auto _ = []() {
-  if (ngtcp2_crypto_quictls_init() != 0) {
+  if (ngtcp2_crypto_libressl_init() != 0) {
     assert(0);
     abort();
   }
@@ -97,8 +97,8 @@ int TLSClientContext::init(const char *private_key_file,
     return -1;
   }
 
-  if (ngtcp2_crypto_quictls_configure_client_context(ssl_ctx_) != 0) {
-    std::cerr << "ngtcp2_crypto_quictls_configure_client_context failed"
+  if (ngtcp2_crypto_libressl_configure_client_context(ssl_ctx_) != 0) {
+    std::cerr << "ngtcp2_crypto_libressl_configure_client_context failed"
               << std::endl;
     return -1;
   }

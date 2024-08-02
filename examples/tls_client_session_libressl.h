@@ -22,14 +22,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef TLS_CLIENT_SESSION_QUICTLS_H
-#define TLS_CLIENT_SESSION_QUICTLS_H
+#ifndef TLS_CLIENT_SESSION_LIBRESSL_H
+#define TLS_CLIENT_SESSION_LIBRESSL_H
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include "tls_session_base_quictls.h"
+#include "tls_session_base_libressl.h"
 #include "shared.h"
 
 using namespace ngtcp2;
@@ -49,4 +49,4 @@ public:
   bool get_early_data_accepted() const;
 };
 
-#endif // TLS_CLIENT_SESSION_QUICTLS_H
+#endif // TLS_CLIENT_SESSION_LIBRESSL_H
