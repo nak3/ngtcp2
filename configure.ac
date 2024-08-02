@@ -272,6 +272,8 @@ if test "x${request_libressl}" = "xyes" &&
   AC_MSG_ERROR([libressl was requested (--with-libressl) but not found])
 fi
 
+AM_CONDITIONAL([HAVE_LIBRESSL], [ test "x${have_libressl}" = "xyes" ])
+
 # GnuTLS (required for libngtcp2_crypto_gnutls)
 have_gnutls=no
 if test "x${request_gnutls}" != "xno"; then

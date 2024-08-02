@@ -49,6 +49,12 @@ elseif(ENABLE_PICOTLS)
   message(WARNING "libngtcp2_crypto_picotls library is disabled due to lack of good Picotls")
 endif()
 
+if(HAVE_LIBRESSL)
+  add_subdirectory(libressl)
+elseif(ENABLE_LIBRESSL)
+  message(WARNING "libngtcp2_crypto_libressl library is disabled due to lack of good LibreSSL")
+endif()
+
 if(HAVE_WOLFSSL)
   add_subdirectory(wolfssl)
 elseif(ENABLE_WOLFSSL)

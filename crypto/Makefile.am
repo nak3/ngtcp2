@@ -38,6 +38,10 @@ if HAVE_BORINGSSL
 SUBDIRS += boringssl
 endif
 
+if HAVE_LIBRESSL
+SUBDIRS += libressl
+endif
+
 if HAVE_PICOTLS
 SUBDIRS += picotls
 endif

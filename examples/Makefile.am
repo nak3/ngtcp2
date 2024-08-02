@@ -155,7 +155,7 @@ lsslclient_SOURCES = client.cc client.h ${CLIENT_SRCS} \
         tls_client_context_libressl.cc tls_client_context_libressl.h \
         tls_client_session_libressl.cc tls_client_session_libressl.h \
         tls_session_base_libressl.cc tls_session_base_libressl.h \
-        util_libressl.cc
+	util_openssl.cc
 
 lsslserver_CPPFLAGS = ${lsslclient_CPPFLAGS}
 lsslserver_LDADD = ${lsslclient_LDADD} \
@@ -165,7 +165,7 @@ lsslserver_SOURCES = server.cc server.h ${SERVER_SRCS} \
         tls_server_context_libressl.cc tls_server_context_libressl.h \
         tls_server_session_libressl.cc tls_server_session_libressl.h \
         tls_session_base_libressl.cc tls_session_base_libressl.h \
-        util_libressl.cc
+	util_openssl.cc
 endif # ENABLE_EXAMPLE_LIBRESSL
 
 if ENABLE_EXAMPLE_BORINGSSL

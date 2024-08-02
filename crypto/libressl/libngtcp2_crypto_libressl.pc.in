@@ -25,9 +25,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: libngtcp2_crypto_quictls
-Description: ngtcp2 quictls crypto library
+Name: libngtcp2_crypto_libressl
+Description: ngtcp2 libressl crypto library
 URL: https://github.com/ngtcp2/ngtcp2
 Version: @VERSION@
-Libs: -L${libdir} -lngtcp2_crypto_quictls
+Libs: -L${libdir} -lngtcp2_crypto_libressl
 Cflags: -I${includedir}
