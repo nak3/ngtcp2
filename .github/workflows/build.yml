@@ -524,8 +524,8 @@ jobs:
         [ -n "$NGTCP2_BUILD_DIR" ] && cd "$NGTCP2_BUILD_DIR"
         "$NGTCP2_SOURCE_DIR"/ci/gen-certificate.sh
 
-        CLIENTS="qtlsclient gtlsclient bsslclient wsslclient ptlsclient"
-        SERVERS="qtlsserver gtlsserver bsslserver wsslserver ptlsserver"
+        CLIENTS="qtlsclient gtlsclient bsslclient wsslclient ptlsclient lsslclient"
+        SERVERS="qtlsserver gtlsserver bsslserver wsslserver ptlsserver lsslserver"
 
         for client in $CLIENTS; do
           for server in $SERVERS; do

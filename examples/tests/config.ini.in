@@ -8,6 +8,7 @@ gnutls = @have_gnutls@
 boringssl = @have_boringssl@
 picotls = @have_picotls@
 wolfssl = @have_wolfssl@
+libressl = @have_libressl@
 
 [examples]
 port = 4433
@@ -16,6 +17,7 @@ gnutls = @EXAMPLES_GNUTLS@
 boringssl = @EXAMPLES_BORINGSSL@
 picotls = @EXAMPLES_PICOTLS@
 wolfssl = @EXAMPLES_WOLFSSL@
+libressl = @EXAMPLES_LIBRESSL@
 
 [clients]
 quictls = qtlsclient
@@ -23,6 +25,7 @@ gnutls = gtlsclient
 boringssl = bsslclient
 picotls = ptlsclient
 wolfssl = wsslclient
+libressl = lsslclient
 
 [servers]
 quictls = qtlsserver
@@ -30,3 +33,4 @@ gnutls = gtlsserver
 boringssl = bsslserver
 picotls = ptlsserver
 wolfssl = wsslserver
+libressl = lsslserver
