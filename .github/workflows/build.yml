@@ -413,7 +413,7 @@ jobs:
         PICOTLS_CFLAGS="-I$PICOTLS_PREFIX/include/"
         PICOTLS_LIBS="-L$PICOTLS_PREFIX/build -lpicotls-openssl -lpicotls-core"
 
-        AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-picotls --with-libbrotlienc --with-libbrotlidec"
+        AUTOTOOLS_OPTS="--enable-werror --with-libnghttp3 --with-openssl --with-gnutls --with-boringssl --with-wolfssl --with-picotls --with-libbrotlienc --with-libbrotlidec --with-libressl"
 
         echo 'PKG_CONFIG_PATH='"$PKG_CONFIG_PATH" >> $GITHUB_ENV
         echo 'LDFLAGS='"$LDFLAGS" >> $GITHUB_ENV
