@@ -375,7 +375,7 @@ jobs:
         path: wolfssl/build
         key: ${{ matrix.os }}-wolfssl-${{ env.WOLFSSL_VERSION }}
         fail-on-cache-miss: true
-    - name: Restore libreSSL cache
+    - name: Restore LibreSSL cache
       uses: actions/cache/restore@v4
       with:
         path: |
@@ -499,6 +499,7 @@ jobs:
           -DENABLE_PICOTLS=ON \
           -DPICOTLS_LIBRARIES="$PICOTLS_LIBS" \
           -DPICOTLS_INCLUDE_DIR="$PICOTLS_PREFIX/include/" \
+          -DENABLE_LIBRESSL=ON \
           -DENABLE_WOLFSSL=ON
     - name: Build ngtcp2
       if: matrix.buildtool != 'distcheck'

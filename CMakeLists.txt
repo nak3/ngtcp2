@@ -403,6 +403,7 @@ message(STATUS "summary of build options:
       Libnghttp3:     ${HAVE_LIBNGHTTP3} (LIBS='${LIBNGHTTP3_LIBRARIES}')
       GnuTLS:         ${HAVE_GNUTLS} (LIBS='${GNUTLS_LIBRARIES}')
       BoringSSL:      ${HAVE_BORINGSSL} (LIBS='${BORINGSSL_LIBRARIES}')
+      LibreSSL:       ${HAVE_LIBRESSL} (LIBS='${LIBRESSL_LIBRARIES}')
       Picotls:        ${HAVE_PICOTLS} (LIBS='${PICOTLS_LIBRARIES}')
       wolfSSL:        ${HAVE_WOLFSSL} (LIBS='${WOLFSSL_LIBRARIES}')
       Jemalloc:       ${HAVE_JEMALLOC} (LIBS='${JEMALLOC_LIBRARIES}')
