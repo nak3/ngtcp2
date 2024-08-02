@@ -511,7 +511,7 @@ jobs:
       run: |
         PKG_CONFIG_PATH="$PWD/libressl/build/lib/pkgconfig:$PWD/nghttp3/build/lib/pkgconfig"
         LDFLAGS="-Wl,-rpath,$PWD/libressl/build/lib"
-        AUTOTOOLS_OPTS="--enable-werror --with-libressl"
+        AUTOTOOLS_OPTS="--enable-werror --with-libressl --with-examples"
         autoreconf -i && \
         ./configure --disable-dependency-tracking $AUTOTOOLS_OPTS
         make -j"$NPROC" check
