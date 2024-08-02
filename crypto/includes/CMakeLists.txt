@@ -54,3 +54,9 @@ if(HAVE_WOLFSSL)
       ngtcp2/ngtcp2_crypto_wolfssl.h
       DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/ngtcp2")
 endif()
+
+if(HAVE_LIBRESSL)
+  install(FILES
+      ngtcp2/ngtcp2_crypto_libressl.h
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/ngtcp2")
+endif()

@@ -164,6 +164,9 @@ AC_ARG_WITH([libbrotlidec],
 AC_ARG_VAR([BORINGSSL_CFLAGS], [C compiler flags for BORINGSSL])
 AC_ARG_VAR([BORINGSSL_LIBS], [linker flags for BORINGSSL])
 
+AC_ARG_VAR([LIBRESSL_CFLAGS], [C compiler flags for LIBRESSL])
+AC_ARG_VAR([LIBRESSL_LIBS], [linker flags for LIBRESSL])
+
 AC_ARG_VAR([PICOTLS_CFLAGS], [C compiler flags for PICOTLS])
 AC_ARG_VAR([PICOTLS_LIBS], [linker flags for PICOTLS])
 

@@ -49,4 +49,8 @@
 #  include "tls_server_session_wolfssl.h"
 #endif // ENABLE_EXAMPLE_WOLFSSL && WITH_EXAMPLE_WOLFSSL
 
+#if defined(ENABLE_EXAMPLE_LIBRESSL) && defined(WITH_EXAMPLE_LIBRESSL)
+#  include "tls_server_session_libressl.h"
+#endif // ENABLE_EXAMPLE_LIBRESSL && WITH_EXAMPLE_LIBRESSL
+
 #endif // TLS_SERVER_SESSION_H

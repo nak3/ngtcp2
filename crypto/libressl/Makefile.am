@@ -27,7 +27,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib/includes -I$(top_builddir)/lib/includes \
 	-I$(top_srcdir)/lib -DBUILDING_NGTCP2 \
 	-I$(top_srcdir)/crypto/includes -I$(top_builddir)/crypto/includes \
 	-I$(top_srcdir)/crypto -I$(top_builddir)/crypto \
-	@OPENSSL_CFLAGS@
+	@LIBRESSL_CFLAGS@
 AM_LDFLAGS = ${LIBTOOL_LDFLAGS}
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -38,6 +38,6 @@ lib_LTLIBRARIES = libngtcp2_crypto_libressl.la
 
 libngtcp2_crypto_libressl_la_SOURCES = libressl.c ../shared.c ../shared.h
 libngtcp2_crypto_libressl_la_LDFLAGS = -no-undefined \
-	-version-info $(CRYPTO_QUICTLS_LT_CURRENT):$(CRYPTO_LIBRESSL_LT_REVISION):$(CRYPTO_LIBRESSL_LT_AGE)
+	-version-info $(CRYPTO_LIBRESSL_LT_CURRENT):$(CRYPTO_LIBRESSL_LT_REVISION):$(CRYPTO_LIBRESSL_LT_AGE)
 libngtcp2_crypto_libressl_la_LIBADD = $(top_builddir)/lib/libngtcp2.la \
 	@LIBRESSL_LIBS@
