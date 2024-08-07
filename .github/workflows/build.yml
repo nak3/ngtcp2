@@ -534,16 +534,16 @@ jobs:
         # failure; see https://gitlab.com/gnutls/gnutls/-/issues/1403
         EXPR="not (gnutls-wolfssl and (resume or earlydata)) and not (gnutls-boringssl and earlydata)"
 
-        if [ "${{ matrix.tls }}" = "group-c" ]; then
-          # libressl does not support resumption, earlydata,
-          # TLS_AES_128_CCM_SHA256, and X25519.  Moreover, libressl
-          # server does not fail handshake if server requires client
-          # certificate, but client does not offer it.  Resumption
-          # does not work between libressl flavored picotls server and
-          # boringssl client.  The one of the reasons is the lack of
-          # X25519 support in libressl.
-          #          EXPR="$EXPR and not ((quictls and (resume or earlydata or TLS_AES_128_CCM_SHA256)) or (quictls- and test_04_01) or (picotls-boringssl and (resume or earlydata)))"
-        fi
+        #        if [ "${{ matrix.tls }}" = "group-c" ]; then
+        #          # libressl does not support resumption, earlydata,
+        #          # TLS_AES_128_CCM_SHA256, and X25519.  Moreover, libressl
+        #          # server does not fail handshake if server requires client
+        #          # certificate, but client does not offer it.  Resumption
+        #          # does not work between libressl flavored picotls server and
+        #          # boringssl client.  The one of the reasons is the lack of
+        #          # X25519 support in libressl.
+        #          EXPR="$EXPR and not ((quictls and (resume or earlydata or TLS_AES_128_CCM_SHA256)) or (quictls- and test_04_01) or (picotls-boringssl and (resume or earlydata)))"
+        #        fi
 
         pytest-3 -v -k "$EXPR"
     - name: Integration test
