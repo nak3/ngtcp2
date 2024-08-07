@@ -3,10 +3,12 @@
 
 WORKSPACE=picotls-"${OPENSSL}"
 
+PICOTLS_VERSION="7615279c9629c105c071ed04ab3f82533fb4986d"
+
 mkdir "${WORKSPACE}"
 cd "${WORKSPACE}"
 git init
-git remote add origin https://github.com/h2o/picotls
+git remote add origin https://github.com/nak3/picotls
 git fetch origin --depth 1 "${PICOTLS_VERSION}"
 git checkout "${PICOTLS_VERSION}"
 git submodule update --init --depth 1
