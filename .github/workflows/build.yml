@@ -64,15 +64,12 @@ jobs:
       with:
         path: openssl3/build
         key: ${{ matrix.os }}-openssl-${{ env.OPENSSL3_VERSION }}
-    - name: Restore BoringSSL cache
+    - name: Build BoringSSL
       id: cache-boringssl
-      uses: actions/cache@v4
+      uses: nak3/actions/boringssl@main
       with:
-        path: |
-          boringssl/build/crypto/libcrypto.a
-          boringssl/build/ssl/libssl.a
-          boringssl/include
-        key: ${{ matrix.os }}-boringssl-${{ env.BORINGSSL_VERSION }}
+        os: ${{ matrix.os }}
+        boringssl_version: ${{ env.BORINGSSL_VERSION }}
     - name: Restore aws-lc cache
       id: cache-awslc
       uses: actions/cache@v4
@@ -174,10 +171,6 @@ jobs:
         ./ci/build_openssl.sh
       env:
         OPENSSL: openssl3
-    - name: Build BoringSSL
-      if: steps.cache-boringssl.outputs.cache-hit != 'true'
-      run: |
-        ./ci/build_boringssl.sh
     - name: Build aws-lc
       if: steps.cache-awslc.outputs.cache-hit != 'true'
       run: |
