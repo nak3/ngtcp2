@@ -600,7 +600,7 @@ jobs:
           # work between libressl flavored picotls server and
           # boringssl client.  The one of the reasons is the lack of
           # X25519 support in libressl.
-          EXPR="$EXPR and not ((quictls and (resume or earlydata or TLS_AES_128_CCM_SHA256)) or (picotls-boringssl and (resume or earlydata)))"
+          #  EXPR="$EXPR and not ((quictls and (resume or earlydata or TLS_AES_128_CCM_SHA256)) or (picotls-boringssl and (resume or earlydata)))"
         fi
 
         pytest-3 -v -k "$EXPR"
