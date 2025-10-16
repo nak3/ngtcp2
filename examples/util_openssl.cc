@@ -191,6 +191,8 @@ const char *crypto_default_groups() {
   return "X25519:P-256:P-384:P-521"
 #if defined(WITH_EXAMPLE_BORINGSSL) || defined(WITH_EXAMPLE_OSSL)
          ":X25519MLKEM768"
+#elif defined(LIBRESSL_VERSION_NUMBER)
+         ":MLKEM768-X25519"
 #endif // defined(WITH_EXAMPLE_BORINGSSL) || defined(WITH_EXAMPLE_OSSL)
     ;
 }
