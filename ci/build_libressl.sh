@@ -4,7 +4,7 @@
 git clone --depth 1 -b "${LIBRESSL_VERSION}" https://github.com/libressl/portable.git libressl
 cd libressl
 # Workaround autogen.sh failure
-export LIBRESSL_GIT_OPTIONS="-b patch-23"
+export LIBRESSL_GIT_OPTIONS="-b test-patch23-take2"
 export LIBRESSL_GIT="https://github.com/nak3"
 ./autogen.sh
 ./configure --prefix=$PWD/build
